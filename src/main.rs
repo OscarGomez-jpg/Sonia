@@ -1,21 +1,11 @@
-use std::env;
+mod fetcher;
+mod handler;
 
 use dotenv::dotenv;
-
-use serenity::{async_trait, model::channel::Message, prelude::*};
-
-struct Handler;
-
-#[async_trait]
-impl EventHandler for Handler {
-    async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!ping" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sendind message: {why:?}");
-            }
-        }
-    }
-}
+use fetcher::fetch_memes;
+use handler::Handler;
+use serenity::prelude::*;
+use std::env;
 
 #[tokio::main]
 async fn main() {
@@ -29,12 +19,14 @@ async fn main() {
         | GatewayIntents::MESSAGE_CONTENT;
 
     // Create a new instance of the Client, logging in as a bot.
-    let mut client = Client::builder(&token, intents)
+    let client = Client::builder(&token, intents)
         .event_handler(Handler)
         .await
         .expect("Error creating user");
 
-    if let Err(why) = client.start().await {
-        println!("Client error: {why:?}");
-    }
+    // if let Err(why) = client.start().await {
+    //     println!("Client error: {why:?}");
+    // }
+
+    fetch_memes().await.unwrap();
 }
