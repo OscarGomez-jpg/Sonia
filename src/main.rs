@@ -19,14 +19,14 @@ async fn main() {
         | GatewayIntents::MESSAGE_CONTENT;
 
     // Create a new instance of the Client, logging in as a bot.
-    let client = Client::builder(&token, intents)
+    let mut client = Client::builder(&token, intents)
         .event_handler(Handler)
         .await
         .expect("Error creating user");
 
-    // if let Err(why) = client.start().await {
-    //     println!("Client error: {why:?}");
-    // }
+    if let Err(why) = client.start().await {
+        println!("Client error: {why:?}");
+    }
 
     fetch_memes().await.unwrap();
 }

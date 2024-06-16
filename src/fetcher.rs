@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Write;
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Meme {
-    url: String,
-    text: String,
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Meme {
+    pub url: String,
+    pub text: String,
 }
 
 async fn fetch_page(url: &str) -> Result<String, reqwest::Error> {
@@ -38,14 +38,14 @@ fn parse_memes(body: &str) -> Vec<Meme> {
     memes
 }
 
-fn write_to_file(filename: &str, memes: &Vec<Meme>) -> std::io::Result<()> {
+fn _write_to_file(filename: &str, memes: &Vec<Meme>) -> std::io::Result<()> {
     let file = File::create(filename)?;
     let mut file = std::io::BufWriter::new(file);
     write!(file, "{}", serde_json::to_string(&memes).unwrap())?;
     Ok(())
 }
 
-pub async fn fetch_memes() -> Result<(), Box<dyn std::error::Error>> {
+pub async fn fetch_memes() -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
     let delay = 2;
     let initial_page = 1;
     let last_page = 1;
@@ -60,8 +60,8 @@ pub async fn fetch_memes() -> Result<(), Box<dyn std::error::Error>> {
         std::thread::sleep(std::time::Duration::from_secs(delay));
     }
 
-    let filename = format!("{}.json", source.split('/').last().unwrap());
-    write_to_file(&filename, &memes)?;
+    // let filename = format!("{}.json", source.split('/').last().unwrap());
+    // write_to_file(&filename, &memes)?;
 
-    Ok(())
+    Ok(memes)
 }

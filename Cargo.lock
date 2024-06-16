@@ -1794,6 +1794,7 @@ name = "sonia"
 version = "0.1.0"
 dependencies = [
  "dotenv",
+ "rand",
  "reqwest 0.12.4",
  "scraper",
  "serde",
