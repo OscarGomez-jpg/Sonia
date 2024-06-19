@@ -48,7 +48,7 @@ fn _write_to_file(filename: &str, memes: &Vec<Meme>) -> std::io::Result<()> {
 pub async fn fetch_memes() -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
     let delay = 2;
     let initial_page = 1;
-    let last_page = 1;
+    let last_page = 5;
     let source = "https://imgflip.com/meme/162372564/Domino-Effect";
     let mut memes = Vec::new();
 
