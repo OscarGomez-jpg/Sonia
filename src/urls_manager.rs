@@ -51,6 +51,8 @@ pub struct UrlManager {
 }
 
 impl UrlManager {
+    // This function is intended to create or recuperate the memes that we already fetch
+    // So the bot don't have to do the web scrapping all the time
     pub async fn new() -> Self {
         let url = format!("{SAVES_URL}/{SAVE_FILE_NAME}");
         let path = Path::new(&url);
@@ -72,8 +74,11 @@ impl UrlManager {
         Self { memes, visited }
     }
 
+    //This will save all memes in the manager as the states of the already send memes
     pub fn save_state(&self) -> std::io::Result<()> {
-        let file = File::create(SAVE_FILE_NAME)?;
+        let url = format!("{SAVES_URL}/{SAVE_FILE_NAME}");
+        let path = Path::new(&url);
+        let file = File::create(path)?;
         let mut file = std::io::BufWriter::new(file);
         write!(file, "{}", serde_json::to_string(&self.memes).unwrap())?;
         Ok(())

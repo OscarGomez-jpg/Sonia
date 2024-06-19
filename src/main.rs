@@ -18,9 +18,10 @@ async fn main() {
         | GatewayIntents::DIRECT_MESSAGES
         | GatewayIntents::MESSAGE_CONTENT;
 
+    let handler = Handler::new().await;
     // Create a new instance of the Client, logging in as a bot.
     let mut client = Client::builder(&token, intents)
-        .event_handler(Handler)
+        .event_handler(handler)
         .await
         .expect("Error creating user");
 

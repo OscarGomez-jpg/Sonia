@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serenity::{
     all::{CreateAttachment, CreateMessage, EventHandler, Message},
     async_trait,
@@ -6,7 +8,19 @@ use serenity::{
 
 use crate::urls_manager::UrlManager;
 
-pub struct Handler;
+pub struct Handler {
+    url_manager: Arc<Mutex<UrlManager>>,
+}
+
+impl Handler {
+    pub async fn new() -> Self {
+        let url_manager = UrlManager::new().await;
+
+        Self {
+            url_manager: Arc::new(Mutex::new(url_manager)),
+        }
+    }
+}
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -14,13 +28,13 @@ impl EventHandler for Handler {
         //For now is the same as before, have to store somewhere else to
         //be reused each time it is called, maybe a singleton, but don't know
         //how to do that
-        let mut url_manager = UrlManager::new().await;
 
         if msg.content == ">ping" {
             if let Err(why) = msg.channel_id.say(&ctx.http, "Pong<").await {
                 println!("Error sendind message: {why:?}");
             }
         } else if msg.content == ">meme" {
+            let mut url_manager = self.url_manager.lock().await;
             let meme = url_manager.get_meme().await;
             let meme_url = meme.url;
 
@@ -78,6 +92,7 @@ impl EventHandler for Handler {
                     println!("Fatal error sending the meme: {why:?}");
                 }
             }
+
             url_manager.save_state().unwrap();
         }
     }
