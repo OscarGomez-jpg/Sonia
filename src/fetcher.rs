@@ -26,7 +26,7 @@ fn parse_memes(body: &str) -> Vec<Meme> {
     for element in document.select(&meme_selector) {
         // let res = element.select(&img_selector).count();
         if let Some(img_element) = element.select(&img_selector).next() {
-            let url = img_element.value().attr("src").unwrap();
+            let url = "https:".to_string() + img_element.value().attr("src").unwrap();
             let text = img_element.value().attr("alt").unwrap();
             memes.push(Meme {
                 url: url.to_string(),
