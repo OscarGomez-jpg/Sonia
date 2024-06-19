@@ -1,4 +1,9 @@
-use std::{collections::HashSet, fs::File, io::Write, path::Path};
+use std::{
+    collections::HashSet,
+    fs::{create_dir_all, File},
+    io::Write,
+    path::Path,
+};
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
@@ -67,6 +72,7 @@ impl UrlManager {
                 .filter_map(|(i, m)| if m.send { Some(i) } else { None })
                 .collect();
         } else {
+            create_dir_all(path).unwrap();
             memes = get_new_memes().await;
             visited = HashSet::new();
         }
