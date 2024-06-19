@@ -4,10 +4,11 @@ use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Write;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Hash, PartialEq, Eq)]
 pub struct Meme {
     pub url: String,
     pub text: String,
+    pub send: bool,
 }
 
 async fn fetch_page(url: &str) -> Result<String, reqwest::Error> {
@@ -31,6 +32,7 @@ fn parse_memes(body: &str) -> Vec<Meme> {
             memes.push(Meme {
                 url: url.to_string(),
                 text: text.to_string(),
+                send: false,
             });
         }
     }

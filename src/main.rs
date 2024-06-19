@@ -1,8 +1,8 @@
 mod fetcher;
 mod handler;
+mod urls_manager;
 
 use dotenv::dotenv;
-use fetcher::fetch_memes;
 use handler::Handler;
 use serenity::prelude::*;
 use std::env;
@@ -27,6 +27,4 @@ async fn main() {
     if let Err(why) = client.start().await {
         println!("Client error: {why:?}");
     }
-
-    fetch_memes().await.unwrap();
 }
