@@ -1,5 +1,4 @@
 use std::{
-    collections::HashSet,
     fs::{create_dir_all, File},
     io::Write,
     path::Path,
@@ -24,7 +23,7 @@ async fn get_new_memes() -> Vec<Meme> {
         memes = vec![Meme {
             url: ERROR_IMAGE.to_string(),
             text: "Could not find any meme".to_string(),
-            send: false,
+            send: true,
         }];
     }
 
@@ -52,7 +51,7 @@ async fn remeber() -> Vec<Meme> {
 
 pub struct UrlManager {
     pub memes: Vec<Meme>,
-    pub visited: HashSet<usize>,
+    pub visited: Vec<usize>,
 }
 
 impl UrlManager {
@@ -66,15 +65,11 @@ impl UrlManager {
         let visited;
         if path.exists() {
             memes = remeber().await;
-            visited = memes
-                .iter()
-                .enumerate()
-                .filter_map(|(i, m)| if m.send { Some(i) } else { None })
-                .collect();
+            visited = (0..memes.len()).collect();
         } else {
             create_dir_all(path).unwrap();
             memes = get_new_memes().await;
-            visited = HashSet::new();
+            visited = Vec::new();
         }
 
         Self { memes, visited }
@@ -94,26 +89,22 @@ impl UrlManager {
         let mut rng = StdRng::from_entropy();
 
         // This is the case when get_new_memes fails
-        if self.memes.len() == 1 {
+        if self.memes.len() == 1 && self.memes[0].send {
             return self.memes[0].clone();
         }
 
-        let mut new_meme_index;
-        loop {
-            new_meme_index = rng.gen_range(0..self.memes.len());
+        let new_index = rng.gen_range(0..self.visited.len());
+        let new_meme_index = self.visited.remove(new_index);
+        self.memes[new_meme_index].send = true;
+        let to_return = self.memes[new_meme_index].clone();
 
-            // This prevents to fetch the same meme
-            if !self.visited.contains(&new_meme_index) {
-                self.visited.insert(new_meme_index);
-                self.memes[new_meme_index].send = true;
-                return self.memes[new_meme_index].clone();
-            }
-
-            // This is made to refresh memes selection and prevent infinite loop
-            if self.visited.len() == self.memes.len() {
-                self.visited = HashSet::new();
-                self.memes = get_new_memes().await;
-            }
+        // This is made to refresh memes selection and prevent infinite loop
+        if self.visited.is_empty() {
+            let new_memes = get_new_memes().await;
+            self.visited = (0..new_memes.len()).collect();
+            self.memes = new_memes;
         }
+
+        to_return
     }
 }

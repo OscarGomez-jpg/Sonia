@@ -1,8 +1,6 @@
 use scraper::selectable::Selectable;
 use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize};
-use std::fs::File;
-use std::io::Write;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, PartialEq, Eq)]
 pub struct Meme {
@@ -40,13 +38,6 @@ fn parse_memes(body: &str) -> Vec<Meme> {
     memes
 }
 
-fn _write_to_file(filename: &str, memes: &Vec<Meme>) -> std::io::Result<()> {
-    let file = File::create(filename)?;
-    let mut file = std::io::BufWriter::new(file);
-    write!(file, "{}", serde_json::to_string(&memes).unwrap())?;
-    Ok(())
-}
-
 pub async fn fetch_memes() -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
     let delay = 2;
     let initial_page = 1;
@@ -61,9 +52,6 @@ pub async fn fetch_memes() -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
         memes.extend(parse_memes(&body));
         std::thread::sleep(std::time::Duration::from_secs(delay));
     }
-
-    // let filename = format!("{}.json", source.split('/').last().unwrap());
-    // write_to_file(&filename, &memes)?;
 
     Ok(memes)
 }
