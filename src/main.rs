@@ -1,4 +1,5 @@
 mod command;
+mod commands;
 mod fetcher;
 mod handler;
 mod urls_manager;
