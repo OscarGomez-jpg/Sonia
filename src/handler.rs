@@ -8,8 +8,7 @@ use serenity::{
 };
 
 use crate::{
-    command::CommandManager,
-    commands::{meme_command::MemeCommand, ping_command::PingCommand},
+    commands::{command::CommandManager, meme_command::MemeCommand, ping_command::PingCommand},
     urls_manager::UrlManager,
 };
 

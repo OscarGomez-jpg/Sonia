@@ -5,16 +5,14 @@ use serenity::{
     futures::lock::Mutex,
 };
 
-use crate::{
-    command::{Command, ExecutableCommand},
-    urls_manager::UrlManager,
-};
+use crate::urls_manager::UrlManager;
+
+use super::command::{Command, ExecutableCommand};
 
 pub struct MemeCommand {
     pub url_manager: Arc<Mutex<UrlManager>>,
 }
 
-#[async_trait::async_trait]
 impl Command for MemeCommand {
     fn name(&self) -> &'static str {
         ">meme"
@@ -37,12 +35,7 @@ impl ExecutableCommand for MemeCommand {
                     .send_files(&ctx.http, vec![meme], builder)
                     .await;
 
-                match meme_msg {
-                    Ok(_) => {}
-                    Err(why) => {
-                        println!("{why:?}");
-                    }
-                }
+                meme_msg.expect("Panic sending the meme");
             }
 
             Err(why) => {
@@ -57,12 +50,7 @@ impl ExecutableCommand for MemeCommand {
                             .send_files(&ctx.http, vec![err_attachment], builder)
                             .await;
 
-                        match err_msg {
-                            Ok(_) => {}
-                            Err(why) => {
-                                println!("{why:?}");
-                            }
-                        }
+                        err_msg.expect("Panic sending the error message");
                     }
 
                     Err(send_error) => {

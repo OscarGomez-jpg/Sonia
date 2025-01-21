@@ -1,4 +1,3 @@
-mod command;
 mod commands;
 mod fetcher;
 mod handler;
