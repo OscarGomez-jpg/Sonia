@@ -7,9 +7,10 @@ use serenity::{
     prelude::*,
 };
 
-use crate::{
-    commands::{command::CommandManager, meme_command::MemeCommand, ping_command::PingCommand},
-    urls_manager::UrlManager,
+use crate::commands::{
+    command::CommandManager,
+    meme_commands::{meme_command::MemeCommand, urls_manager::UrlManager},
+    ping_commands::ping_command::PingCommand,
 };
 
 pub struct Handler {

@@ -1,6 +1,6 @@
 use serenity::all::{Context, Message};
 
-use super::command::{Command, ExecutableCommand};
+use crate::commands::command::{Command, ExecutableCommand};
 
 pub struct PingCommand;
 

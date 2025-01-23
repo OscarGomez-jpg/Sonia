@@ -5,9 +5,9 @@ use serenity::{
     futures::lock::Mutex,
 };
 
-use crate::urls_manager::UrlManager;
+use crate::commands::command::{Command, ExecutableCommand};
 
-use super::command::{Command, ExecutableCommand};
+use super::urls_manager::UrlManager;
 
 pub struct MemeCommand {
     pub url_manager: Arc<Mutex<UrlManager>>,

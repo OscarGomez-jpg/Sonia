@@ -1,3 +1,3 @@
 pub mod command;
-pub mod meme_command;
-pub mod ping_command;
+pub mod meme_commands;
+pub mod ping_commands;

@@ -6,7 +6,7 @@ use std::{
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use crate::fetcher::{fetch_memes, Meme};
+use super::fetcher::{fetch_memes, Meme};
 
 const ERROR_IMAGE: &str =
     "https://res.cloudinary.com/dyegt26ww/image/upload/v1718390339/base_sonia_hbg5s4.png";

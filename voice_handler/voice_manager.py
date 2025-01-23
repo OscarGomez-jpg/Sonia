@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Load Vosk model
-model_path = "../models/vosk-model-small-en-us-0.15"
+model_path = "models/vosk-model-small-en-us-0.15"
 if not os.path.exists(model_path):
     print(
         "Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder."

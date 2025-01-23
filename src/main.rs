@@ -1,10 +1,8 @@
 mod commands;
-mod fetcher;
-mod handler;
-mod urls_manager;
+mod handlers;
 
 use dotenv::dotenv;
-use handler::Handler;
+use handlers::handler::Handler;
 use serenity::prelude::*;
 use std::env;
 
@@ -13,6 +11,7 @@ async fn main() {
     dotenv().ok();
 
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
+    println!("Token recived");
 
     // Set gateway intents, which decides what events the bot will be notified about
     let intents = GatewayIntents::GUILD_MESSAGES
@@ -25,6 +24,7 @@ async fn main() {
         .event_handler(handler)
         .await
         .expect("Error creating user");
+    println!("Client created");
 
     if let Err(why) = client.start().await {
         println!("Client error: {why:?}");
