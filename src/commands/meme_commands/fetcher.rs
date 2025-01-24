@@ -38,19 +38,22 @@ fn parse_memes(body: &str) -> Vec<Meme> {
     memes
 }
 
-pub async fn fetch_memes() -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
+pub async fn fetch_memes(memes_urls: Vec<String>) -> Result<Vec<Meme>, Box<dyn std::error::Error>> {
     let delay = 2;
     let initial_page = 1;
     let last_page = 5;
-    let source = "https://imgflip.com/meme/162372564/Domino-Effect";
     let mut memes = Vec::new();
 
-    for i in initial_page..=last_page {
-        let url = format!("{}?page={}", source, i);
-        println!("{}", url);
-        let body = fetch_page(&url).await?;
-        memes.extend(parse_memes(&body));
-        std::thread::sleep(std::time::Duration::from_secs(delay));
+    for meme_url in memes_urls {
+        // let source = "https://imgflip.com/meme/162372564/Domino-Effect";
+        let source = meme_url;
+        for i in initial_page..=last_page {
+            let url = format!("{}?page={}", source, i);
+            println!("{}", url);
+            let body = fetch_page(&url).await?;
+            memes.extend(parse_memes(&body));
+            std::thread::sleep(std::time::Duration::from_secs(delay));
+        }
     }
 
     Ok(memes)
