@@ -4,6 +4,7 @@ mod handlers;
 use dotenv::dotenv;
 use handlers::handler::Handler;
 use serenity::prelude::*;
+use songbird::SerenityInit;
 use std::env;
 
 #[tokio::main]
@@ -22,6 +23,7 @@ async fn main() {
     // Create a new instance of the Client, logging in as a bot.
     let mut client = Client::builder(&token, intents)
         .event_handler(handler)
+        .register_songbird()
         .await
         .expect("Error creating user");
     println!("Client created");

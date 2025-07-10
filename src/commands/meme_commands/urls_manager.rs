@@ -18,7 +18,7 @@ async fn get_new_memes() -> Vec<Meme> {
         File::open("memes_urls/memes_urls.txt").expect("Could not open memes_urls.txt");
     let reader = std::io::BufReader::new(memes_urls_file);
     let memes_urls: Vec<String> = reader.lines().map(|line| line.unwrap()).collect();
-    println!("{:?}", memes_urls);
+    println!("{memes_urls:?}");
 
     let memes;
     if let Ok(memes_res) = fetch_memes(memes_urls).await {
@@ -66,17 +66,15 @@ impl UrlManager {
         let url = format!("{SAVES_URL}/{SAVE_FILE_NAME}");
         let path = Path::new(&url);
 
-        let memes;
-        let to_visit;
-        if path.exists() {
-            memes = remember().await;
+        let memes = if path.exists() {
+            remember().await
         } else {
             let dir_path = Path::new(SAVES_URL);
             create_dir_all(dir_path).unwrap();
-            memes = get_new_memes().await;
-        }
+            get_new_memes().await
+        };
 
-        to_visit = (0..memes.len()).collect();
+        let to_visit = (0..memes.len()).collect();
         Self { memes, to_visit }
     }
 
