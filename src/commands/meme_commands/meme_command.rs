@@ -21,7 +21,7 @@ impl Command for MemeCommand {
 
 #[async_trait::async_trait]
 impl ExecutableCommand for MemeCommand {
-    async fn execute<'a>(&'a self, ctx: &'a Context, msg: &'a Message) {
+    async fn execute(&self, ctx: &Context, msg: &Message) {
         let mut url_manager = self.url_manager.lock().await;
         let meme = url_manager.get_meme().await;
         let meme_url = meme.url;

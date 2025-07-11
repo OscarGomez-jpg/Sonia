@@ -12,7 +12,7 @@ impl Command for PingCommand {
 
 #[async_trait::async_trait]
 impl ExecutableCommand for PingCommand {
-    async fn execute<'a>(&'a self, ctx: &'a Context, msg: &'a Message) {
+    async fn execute(&self, ctx: &Context, msg: &Message) {
         if let Err(why) = msg.channel_id.say(&ctx.http, "Pong<").await {
             println!("Error sending message: {why:?}");
         }

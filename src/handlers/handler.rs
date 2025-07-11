@@ -8,6 +8,7 @@ use serenity::{
 };
 
 use crate::commands::{
+    call_commands::talk_command::TalkCommand,
     command::CommandManager,
     meme_commands::{meme_command::MemeCommand, urls_manager::UrlManager},
     ping_commands::ping_command::PingCommand,
@@ -24,6 +25,7 @@ impl Handler {
 
         command_manager.register_command(Box::new(PingCommand));
         command_manager.register_command(Box::new(MemeCommand { url_manager }));
+        command_manager.register_command(Box::new(TalkCommand));
 
         Self { command_manager }
     }

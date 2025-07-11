@@ -2,13 +2,15 @@ use async_trait::async_trait;
 use serenity::all::{Context, Message};
 use std::collections::HashMap;
 
+use crate::commands;
+
 pub trait Command: Send + Sync {
     fn name(&self) -> &'static str;
 }
 
 #[async_trait]
 pub trait ExecutableCommand: Command {
-    async fn execute<'a>(&'a self, ctx: &'a Context, msg: &'a Message);
+    async fn execute(&self, ctx: &Context, msg: &Message);
 }
 
 pub struct CommandManager {
@@ -27,8 +29,16 @@ impl CommandManager {
     }
 
     pub async fn handle_message(&self, ctx: &Context, msg: &Message) {
-        if let Some(command) = self.commands.get(msg.content.as_str()) {
-            command.execute(ctx, msg).await;
+        let re = regex::Regex::new(r"^>\w+\s").unwrap();
+
+        if re.is_match(msg.content.as_str()) {
+            let splitted_command = msg.content.split_whitespace().next().unwrap_or("");
+            // println!("{:?}, msg.content: {:?}", msg.author.name, msg.content);
+            if let Some(command) = self.commands.get(splitted_command) {
+                command.execute(ctx, msg).await;
+            }
+        } else {
+            return;
         }
     }
 }

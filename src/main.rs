@@ -1,5 +1,6 @@
 mod commands;
 mod handlers;
+mod services;
 
 use dotenv::dotenv;
 use handlers::handler::Handler;
