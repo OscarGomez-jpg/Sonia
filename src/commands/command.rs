@@ -29,7 +29,7 @@ impl CommandManager {
     }
 
     pub async fn handle_message(&self, ctx: &Context, msg: &Message) {
-        let re = regex::Regex::new(r"^>\w+\s").unwrap();
+        let re = regex::Regex::new(r"^>\w+\s?").unwrap();
 
         if re.is_match(msg.content.as_str()) {
             let splitted_command = msg.content.split_whitespace().next().unwrap_or("");
