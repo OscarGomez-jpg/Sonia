@@ -8,7 +8,9 @@ use serenity::{
 };
 
 use crate::commands::{
-    call_commands::{join_command::JoinCommand, talk_command::TalkCommand},
+    call_commands::{
+        join_command::JoinCommand, leave_command::LeaveCommand, talk_command::TalkCommand,
+    },
     command::CommandManager,
     meme_commands::{meme_command::MemeCommand, urls_manager::UrlManager},
     ping_commands::ping_command::PingCommand,
@@ -16,11 +18,10 @@ use crate::commands::{
 
 pub struct Handler {
     command_manager: CommandManager,
-    songbird: Arc<songbird::Songbird>,
 }
 
 impl Handler {
-    pub async fn new(songbird: Arc<songbird::Songbird>) -> Self {
+    pub async fn new(_songbird: Arc<songbird::Songbird>) -> Self {
         let mut command_manager = CommandManager::new();
         let url_manager = Arc::new(serenity::futures::lock::Mutex::new(UrlManager::new().await));
 
@@ -28,11 +29,9 @@ impl Handler {
         command_manager.register_command(Box::new(MemeCommand { url_manager }));
         command_manager.register_command(Box::new(TalkCommand));
         command_manager.register_command(Box::new(JoinCommand));
+        command_manager.register_command(Box::new(LeaveCommand));
 
-        Self {
-            command_manager,
-            songbird,
-        }
+        Self { command_manager }
     }
 }
 
