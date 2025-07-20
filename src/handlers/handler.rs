@@ -10,6 +10,7 @@ use serenity::{
 use crate::commands::{
     call_commands::{
         join_command::JoinCommand, leave_command::LeaveCommand, talk_command::TalkCommand,
+        test::Test,
     },
     command::CommandManager,
     meme_commands::{meme_command::MemeCommand, urls_manager::UrlManager},
@@ -30,6 +31,7 @@ impl Handler {
         command_manager.register_command(Box::new(TalkCommand));
         command_manager.register_command(Box::new(JoinCommand));
         command_manager.register_command(Box::new(LeaveCommand));
+        command_manager.register_command(Box::new(Test));
 
         Self { command_manager }
     }

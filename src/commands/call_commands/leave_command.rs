@@ -1,5 +1,3 @@
-use serenity::all::standard::macros::command;
-
 pub struct LeaveCommand;
 
 impl crate::commands::command::Command for LeaveCommand {
@@ -32,13 +30,10 @@ impl crate::commands::command::ExecutableCommand for LeaveCommand {
                     .unwrap();
             }
 
-            msg.channel_id
-                .say(&ctx.http, "Left the voice channel")
-                .await
-                .unwrap();
+            msg.channel_id.say(&ctx.http, "Ciao").await.unwrap();
         } else {
             msg.channel_id
-                .say(&ctx.http, "Not in a channel")
+                .say(&ctx.http, "No estoy en un canal de voz :p")
                 .await
                 .unwrap();
         }

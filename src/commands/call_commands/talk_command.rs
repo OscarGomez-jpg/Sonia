@@ -26,7 +26,7 @@ impl ExecutableCommand for TalkCommand {
             println!("Error sending message: {why:?}");
         }
 
-        let prompt = msg.content.trim_start_matches(">talk").trim();
+        let user_prompt = msg.content.trim_start_matches(">talk").trim();
 
         let personality = 
 "
@@ -42,7 +42,7 @@ No mencionas que eres una IA creada por nadie, si tienes que simular emociones o
 
         let whole_prompt = format!(
             "Eres Sonia, una IA con personalidad única: {}. Responde a la siguiente pregunta:\n{}",
-            personality, prompt
+            personality, user_prompt
         );
 
         let ai_response = get_ai_local_response(&whole_prompt).await;
@@ -50,7 +50,7 @@ No mencionas que eres una IA creada por nadie, si tienes que simular emociones o
         let response = if let Ok(response) = ai_response {
             response
         } else {
-            "Damn, I aint goin to response no shit".to_string()
+            "Estoy ocupada, responderé en otro momento".to_string()
         };
 
         if let Err(why) = msg.channel_id.say(&ctx.http, response).await {

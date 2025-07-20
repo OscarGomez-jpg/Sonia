@@ -1,6 +1,3 @@
-use serenity::all::Context;
-use songbird::{input::Input, tracks::Track, TrackEvent};
-
 pub struct JoinCommand;
 
 impl crate::commands::command::Command for JoinCommand {
@@ -9,16 +6,6 @@ impl crate::commands::command::Command for JoinCommand {
     }
 }
 
-// impl JoinCommand {
-//     async fn join_and_speak(
-//         manager: &songbird::Songbird,
-//         _ctx: &Context,
-//         guild_id: serenity::model::id::GuildId,
-//         channel_id: serenity::model::id::ChannelId,
-//         text: &str,
-//     ) {
-//         // // Generate WAV file with Festival
-// println!("Iniciando text2wave...");
 // let mut child = std::process::Command::new("text2wave")
 //     .arg("-o")
 //     .arg("output.wav")
@@ -43,30 +30,6 @@ impl crate::commands::command::Command for JoinCommand {
 // // Checks if the wav file was created
 // let wav_exists = std::path::Path::new("output.wav").exists();
 // println!("¿output.wav exists?: {}", wav_exists);
-//
-// // Join voice channel and play audio
-// println!(
-//     "From guild_id: {:?} and channel_id: {:?}",
-//     guild_id, channel_id
-// );
-
-// if let Ok(_call) = join_result {
-//     //TODO:See waht to do with the call
-//
-//     // if let Some(handler_lock) = manager.get(guild_id) {
-//     //     println!("Joined voice channel successfully!");
-//     //     let mut handler = handler_lock.lock().await;
-//     //     let source = songbird::input::File::new("output.wav");
-//     //     handler.play(Track::from(source));
-//     //     println!("Playing audio in the voice channel...");
-//     // } else {
-//     //     println!("Failed to get handler lock for the voice channel.");
-//     // }
-// } else {
-//     println!("Error joining the channel: {:?}", join_result);
-// }
-//     }
-// }
 
 #[async_trait::async_trait]
 impl crate::commands::command::ExecutableCommand for JoinCommand {
@@ -101,9 +64,3 @@ impl crate::commands::command::ExecutableCommand for JoinCommand {
         }
     }
 }
-
-// fn check_msg(result: SerenityResult<Message>) {
-//     if let Err(why) = result {
-//         println!("Error sending message: {:?}", why);
-//     }
-// }

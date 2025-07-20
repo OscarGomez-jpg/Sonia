@@ -2,8 +2,6 @@ use async_trait::async_trait;
 use serenity::all::{Context, Message};
 use std::collections::HashMap;
 
-use crate::commands;
-
 pub trait Command: Send + Sync {
     fn name(&self) -> &'static str;
 }
